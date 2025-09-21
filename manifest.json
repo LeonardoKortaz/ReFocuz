@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "ReFocuz",
+  "version": "0.1.0",
+  "description": "Track time spent on websites with a clean, professional interface. Stay focused and aware of your browsing habits.",
+  
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab"
+  ],
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["timer.css"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ReFocuz",
+    "default_icon": {
+      "16": "icons/ReFocuzLogo.png",
+      "32": "icons/ReFocuzLogo.png",
+      "48": "icons/ReFocuzLogo.png",
+      "128": "icons/ReFocuzLogo.png"
+    }
+  },
+  
+  "icons": {
+    "16": "icons/ReFocuzLogo.png",
+    "32": "icons/ReFocuzLogo.png",
+    "48": "icons/ReFocuzLogo.png",
+    "128": "icons/ReFocuzLogo.png"
+  }
+}

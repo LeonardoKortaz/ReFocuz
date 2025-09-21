@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReFocuz</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ReFocuz</h1>
+      <p class="subtitle">Time spent on websites</p>
+    </header>
+    
+    <div class="stats-section">
+      <div class="total-time">
+        <span class="label">Total time today:</span>
+        <span id="totalTime" class="time-value">0 min</span>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <button id="toggleTimerBtn" class="btn btn-toggle">
+        <span id="toggleIcon"></span>
+        <span id="toggleText">Enable timer</span>
+      </button>
+      <button id="refreshBtn" class="btn btn-primary">Refresh</button>
+      <button id="clearBtn" class="btn btn-secondary">Clear</button>
+      <button id="progressBtn" class="btn btn-progress">Settings</button>
+    </div>
+    
+    <div class="sites-list">
+      <h3>Website statistics:</h3>
+      <div id="noData" class="no-data">
+        No data to display. Browse websites to see statistics!
+      </div>
+      <div id="sitesList" class="sites-container">
+      </div>
+    </div>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <span>Loading...</span>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
