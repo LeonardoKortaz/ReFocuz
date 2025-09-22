@@ -62,6 +62,12 @@ body {
   color: #fcfefb;
 }
 
+.view-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
 .sites-container {
   display: grid;
   gap: 15px;

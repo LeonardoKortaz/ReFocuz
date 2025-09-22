@@ -148,7 +148,7 @@ function loadData() {
   noData.style.display = 'none';
   sitesList.style.display = 'none';
   
-  chrome.runtime.sendMessage({ action: 'getTimeData' }, (response) => {
+  chrome.runtime.sendMessage({ action: 'getTodayData' }, (response) => {
     if (chrome.runtime.lastError) {
       loading.classList.remove('show');
       noData.style.display = 'block';

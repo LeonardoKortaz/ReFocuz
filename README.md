@@ -1,10 +1,10 @@
 # ReFocuz
 
-A Chrome extension for tracking time spent on websites. (Alpha version)
+A Chrome extension for tracking time spent on websites for today and total time. (Alpha version)
 
 ## Features
 - **Real-time tracking** - Automatically tracks time spent on each website
-- **Visual timer widget** - Timer widget that displays time spent
+- **Visual timer widget** - Timer widget that displays time spent today
 - **Detailed time statistics** - View detailed time breakdown
 - **Clear Data** - Clear all data with one click (Debug option)
 
@@ -12,7 +12,7 @@ A Chrome extension for tracking time spent on websites. (Alpha version)
 
 ### From Source
 1. Clone this repository to a new folder:
-   git clone https://github.com/yourusername/refocuz.git
+   git clone https://github.com/LeonardoKortaz/ReFocuz.git
 
 2. Open Chrome and navigate to `chrome://extensions/`
 

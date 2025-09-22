@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "ReFocuz",
-  "version": "0.1.0",
-  "description": "Track time spent on websites with a clean, professional interface. Stay focused and aware of your browsing habits.",
+  "version": "0.2.0",
+  "description": "Track time spent on websites today and over time.",
   
   "permissions": [
     "tabs",

@@ -1,3 +1,5 @@
+let showingToday = true;
+
 function formatTime(milliseconds) {
   const seconds = Math.floor(milliseconds / 1000);
   const minutes = seconds / 60;
@@ -75,12 +77,24 @@ function loadData() {
   const loading = document.getElementById('loading');
   const noData = document.getElementById('noData');
   const sitesList = document.getElementById('sitesList');
+  const titleElement = document.getElementById('timeTypeTitle');
+  const toggleBtn = document.getElementById('toggleViewBtn');
   
   loading.style.display = 'block';
   noData.style.display = 'none';
   sitesList.style.display = 'none';
   
-  chrome.runtime.sendMessage({ action: 'getTimeData' }, (response) => {
+  const action = showingToday ? 'getTodayData' : 'getTimeData';
+  
+  if (titleElement) {
+    titleElement.textContent = showingToday ? 'Total Time Today' : 'Total Time (All Time)';
+  }
+  
+  if (toggleBtn) {
+    toggleBtn.textContent = showingToday ? 'Show All Time' : 'Show Today Only';
+  }
+  
+  chrome.runtime.sendMessage({ action: action }, (response) => {
     if (chrome.runtime.lastError) {
       loading.style.display = 'none';
       noData.style.display = 'block';
@@ -93,6 +107,11 @@ function loadData() {
 
 function closeWindow() {
   window.close();
+}
+
+function toggleView() {
+  showingToday = !showingToday;
+  loadData();
 }
 
 function clearAllData() {
@@ -122,6 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.getElementById('clearBtn').addEventListener('click', () => {
     clearAllData();
+  });
+  
+  document.getElementById('toggleViewBtn').addEventListener('click', () => {
+    toggleView();
   });
 });
 

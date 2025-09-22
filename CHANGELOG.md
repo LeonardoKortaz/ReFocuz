@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-09-22
+
+### Added
+- **Daily time tracking** - Automatic daily reset of time statistics
+- **Dual time tracking** - Separate tracking for daily and all-time statistics
+
+### Changed
+- **Popup interface** - Now displays today's time instead of total time
+- **Settings page** - Added toggle button to switch between daily and total statistics
+
+
 ## [0.1.0] - 2025-09-21
 
 ### Added

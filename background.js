@@ -77,13 +77,23 @@ function saveCurrentTime() {
   const domain = getDomainFromUrl(currentUrl);
   if (!domain) return;
   
-  chrome.storage.local.get([domain], (result) => {
+  const today = new Date().toDateString();
+  const totalKey = domain;
+  const todayKey = `${domain}_today_${today}`;
+  
+  chrome.storage.local.get([totalKey, todayKey], (result) => {
     if (chrome.runtime.lastError) return;
     
-    const currentTime = result[domain] || 0;
-    const newTime = currentTime + elapsed;
+    const currentTotalTime = result[totalKey] || 0;
+    const currentTodayTime = result[todayKey] || 0;
     
-    chrome.storage.local.set({ [domain]: newTime }, () => {
+    const newTotalTime = currentTotalTime + elapsed;
+    const newTodayTime = currentTodayTime + elapsed;
+    
+    chrome.storage.local.set({ 
+      [totalKey]: newTotalTime,
+      [todayKey]: newTodayTime
+    }, () => {
       if (!chrome.runtime.lastError) {
         activeTimeMs += elapsed;
       }
@@ -109,12 +119,33 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       
       const filteredResult = {};
       for (const [key, value] of Object.entries(result)) {
-        if (key !== 'timerEnabled' && typeof value === 'number') {
+        if (key !== 'timerEnabled' && typeof value === 'number' && !key.includes('_today_')) {
           filteredResult[key] = value;
         }
       }
       
       sendResponse(filteredResult);
+    });
+    return true;
+  }
+  
+  if (request.action === 'getTodayData') {
+    const today = new Date().toDateString();
+    chrome.storage.local.get(null, (result) => {
+      if (chrome.runtime.lastError) {
+        sendResponse({});
+        return;
+      }
+      
+      const todayData = {};
+      for (const [key, value] of Object.entries(result)) {
+        if (key.includes(`_today_${today}`) && typeof value === 'number') {
+          const domain = key.replace(`_today_${today}`, '');
+          todayData[domain] = value;
+        }
+      }
+      
+      sendResponse(todayData);
     });
     return true;
   }
@@ -137,16 +168,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return;
     }
     
-    chrome.storage.local.get([domain], (result) => {
+    const today = new Date().toDateString();
+    const totalKey = domain;
+    const todayKey = `${domain}_today_${today}`;
+    
+    chrome.storage.local.get([totalKey, todayKey], (result) => {
       if (chrome.runtime.lastError) {
         sendResponse({ success: false });
         return;
       }
       
-      const currentTime = result[domain] || 0;
-      const newTime = currentTime + timeSpent;
+      const currentTotalTime = result[totalKey] || 0;
+      const currentTodayTime = result[todayKey] || 0;
       
-      chrome.storage.local.set({ [domain]: newTime }, () => {
+      const newTotalTime = currentTotalTime + timeSpent;
+      const newTodayTime = currentTodayTime + timeSpent;
+      
+      chrome.storage.local.set({ 
+        [totalKey]: newTotalTime,
+        [todayKey]: newTodayTime
+      }, () => {
         if (chrome.runtime.lastError) {
           sendResponse({ success: false });
         } else {
