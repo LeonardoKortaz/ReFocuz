@@ -8,9 +8,7 @@ let lastSavedTime = 0;
 let isPaused = false;
 let timerEnabled = false;
 
-if (window.timeTrackerLoaded) {
-  console.log('ReFocuz already loaded - skipping');
-} else {
+if (!window.timeTrackerLoaded) {
   window.timeTrackerLoaded = true;
 
 let runtimeWarningShown = false;
@@ -21,7 +19,6 @@ function safeSendMessage(message, callback) {
       chrome.runtime.sendMessage(message, (response) => {
         if (chrome.runtime.lastError) {
           if (!runtimeWarningShown) {
-            console.warn('Runtime error:', chrome.runtime.lastError.message);
             runtimeWarningShown = true;
           }
           if (callback) callback(null);
@@ -31,14 +28,12 @@ function safeSendMessage(message, callback) {
       });
     } else {
       if (!runtimeWarningShown) {
-        console.warn('Chrome runtime unavailable');
         runtimeWarningShown = true;
       }
       if (callback) callback(null);
     }
   } catch (error) {
     if (!runtimeWarningShown) {
-      console.warn('Runtime communication error:', error.message);
       runtimeWarningShown = true;
     }
     if (callback) callback(null);
@@ -51,7 +46,6 @@ async function checkTimerEnabled() {
       if (chrome.storage && chrome.storage.local) {
         chrome.storage.local.get(['timerEnabled'], (result) => {
           if (chrome.runtime.lastError) {
-            console.warn('Storage error:', chrome.runtime.lastError.message);
             timerEnabled = false;
             resolve(false);
             return;
@@ -60,12 +54,10 @@ async function checkTimerEnabled() {
           resolve(timerEnabled);
         });
       } else {
-        console.warn('Chrome storage unavailable');
         timerEnabled = false;
         resolve(false);
       }
     } catch (error) {
-      console.warn('Timer state check error:', error.message);
       timerEnabled = false;
       resolve(false);
     }
@@ -103,7 +95,6 @@ function autoSaveTime() {
       lastSavedTime = currentElapsed;
     }
   } catch (error) {
-    console.error('Auto-save error:', error);
   }
 }
 
@@ -180,7 +171,6 @@ function pauseTimerOnHidden() {
       timerWidget.title = 'Timer paused - page inactive';
     }
   } catch (error) {
-    console.error('Pause timer error:', error);
   }
 }
 
@@ -206,7 +196,6 @@ function resumeTimerOnVisible() {
       timerWidget.title = 'Time spent on this page';
     }
   } catch (error) {
-    console.error('Resume timer error:', error);
   }
 }
 
@@ -309,8 +298,6 @@ function updateTimer() {
     const timeElement = timerWidget.querySelector('.time-tracker-time');
     if (timeElement) {
       timeElement.textContent = timeString;
-    } else {
-      console.warn('Timer element not found');
     }
     
     if (timerEnabled) {
@@ -319,7 +306,6 @@ function updateTimer() {
       timerWidget.style.display = 'none';
     }
   } catch (error) {
-    console.error('Update timer error:', error);
   }
 }
 
@@ -453,6 +439,32 @@ document.addEventListener('visibilitychange', () => {
       pauseTimerOnHidden();
     } else {
       resumeTimerOnVisible();
+    }
+  } catch (error) {
+  }
+});
+
+window.addEventListener('focus', () => {
+  try {
+    if (!chrome.runtime || !chrome.runtime.id) {
+      return;
+    }
+    
+    if (!document.hidden && isPaused) {
+      resumeTimerOnVisible();
+    }
+  } catch (error) {
+  }
+});
+
+window.addEventListener('blur', () => {
+  try {
+    if (!chrome.runtime || !chrome.runtime.id) {
+      return;
+    }
+    
+    if (!isPaused) {
+      pauseTimerOnHidden();
     }
   } catch (error) {
   }

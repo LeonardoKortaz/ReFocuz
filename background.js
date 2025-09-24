@@ -16,7 +16,6 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
   if (windowId === chrome.windows.WINDOW_ID_NONE) {
-    saveCurrentTime();
     stopTracking();
   } else {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -28,18 +27,15 @@ chrome.windows.onFocusChanged.addListener(async (windowId) => {
 
 async function handleTabChange(tabId) {
   try {
-    saveCurrentTime();
-    
     const tab = await chrome.tabs.get(tabId);
     if (!tab || !tab.url) return;
     
     if (shouldTrackUrl(tab.url)) {
-      startTracking(tabId, tab.url);
+      updateCurrentTracking(tabId, tab.url);
     } else {
       stopTracking();
     }
   } catch (error) {
-    console.error('Tab change error:', error);
   }
 }
 
@@ -52,10 +48,9 @@ function shouldTrackUrl(url) {
          !url.startsWith('moz-extension://');
 }
 
-function startTracking(tabId, url) {
+function updateCurrentTracking(tabId, url) {
   currentTabId = tabId;
   currentUrl = url;
-  startTime = Date.now();
   isTracking = true;
   activeTimeMs = 0;
 }
@@ -66,39 +61,6 @@ function stopTracking() {
   startTime = null;
   isTracking = false;
   activeTimeMs = 0;
-}
-
-function saveCurrentTime() {
-  if (!isTracking || !startTime || !currentUrl) return;
-  
-  const elapsed = Date.now() - startTime;
-  if (elapsed < 1000) return;
-  
-  const domain = getDomainFromUrl(currentUrl);
-  if (!domain) return;
-  
-  const today = new Date().toDateString();
-  const totalKey = domain;
-  const todayKey = `${domain}_today_${today}`;
-  
-  chrome.storage.local.get([totalKey, todayKey], (result) => {
-    if (chrome.runtime.lastError) return;
-    
-    const currentTotalTime = result[totalKey] || 0;
-    const currentTodayTime = result[todayKey] || 0;
-    
-    const newTotalTime = currentTotalTime + elapsed;
-    const newTodayTime = currentTodayTime + elapsed;
-    
-    chrome.storage.local.set({ 
-      [totalKey]: newTotalTime,
-      [todayKey]: newTodayTime
-    }, () => {
-      if (!chrome.runtime.lastError) {
-        activeTimeMs += elapsed;
-      }
-    });
-  });
 }
 
 function getDomainFromUrl(url) {

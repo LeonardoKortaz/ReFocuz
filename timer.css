@@ -13,17 +13,16 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
   border: 2px solid rgba(252, 254, 251, 0.2) !important;
   backdrop-filter: blur(10px) !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
+  transition: opacity 0.3s ease !important;
   user-select: none !important;
   min-width: 120px !important;
   text-align: center !important;
+  opacity: 1 !important;
 }
 
-#time-tracker-widget:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
-  background: linear-gradient(135deg, #005a87 0%, #003d5c 100%) !important;
+#time-tracker-widget.transparent {
+  opacity: 0.1 !important;
+  pointer-events: none !important;
 }
 
 #time-tracker-widget.paused {

@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-09-24
+
+### Fixed
+- **Accurate time tracking** - Fixed issue where timer counted time on inactive tabs/background pages
+
 ## [0.2.0] - 2025-09-22
 
 ### Added
