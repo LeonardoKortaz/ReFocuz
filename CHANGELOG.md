@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-09-25
+
+### Changed
+- **Enhanced settings organization** - Separated data display (Overview) from configuration (Settings)
+- **Renamed settings page** - Changed from `settings.html` to `refocuz.html`
+
 ## [0.2.1] - 2025-09-24
 
 ### Fixed

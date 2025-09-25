@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReFocuz</title>
+  <link rel="stylesheet" href="refocuz.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>ReFocuz</h1>
+      <div class="subtitle">Time tracking & productivity management</div>
+    </div>
+    
+    <div class="tabs">
+      <button class="tab-button active" data-tab="overview">Overview</button>
+      <button class="tab-button" data-tab="settings">Settings</button>
+    </div>
+    
+    <div id="overview-tab" class="tab-content active">
+      <div class="stats-summary">
+        <div class="stat-card">
+          <h3 id="timeTypeTitle">Total Time Today</h3>
+          <div id="totalTime" class="stat-value">0 min</div>
+        </div>
+      </div>
+      
+      <div class="view-controls">
+        <button id="toggleViewBtn" class="btn btn-secondary">Show All Time</button>
+      </div>
+      
+      <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        Loading your activity data...
+      </div>
+      
+      <div id="noData" class="no-data" style="display: none;">
+        No activity data available yet.<br>
+        Browse websites to see your statistics!
+      </div>
+      
+      <div id="sitesList" class="sites-container">
+      </div>
+      
+      <div class="controls">
+        <button id="refreshBtn" class="btn btn-primary">Refresh Data</button>
+      </div>
+    </div>
+    
+    <div id="settings-tab" class="tab-content">
+      <div class="settings-section">
+        <h3>Timer Control</h3>
+        <div class="setting-item">
+          <label class="toggle-switch">
+            <input type="checkbox" id="timerEnabled" checked>
+            <span class="slider"></span>
+          </label>
+          <div class="setting-info">
+            <div class="setting-title">Enable Time Tracking Widget</div>
+            <div class="setting-desc">Show floating timer widget on websites</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="settings-section">
+        <h3>Data Management</h3>
+        <div class="setting-item">
+          <button id="clearHistoryBtn" class="btn btn-danger">Clear All History</button>
+          <div class="setting-info">
+            <div class="setting-title">Clear History</div>
+            <div class="setting-desc">Permanently delete all time tracking data</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="refocuz.js"></script>
+</body>
+</html>

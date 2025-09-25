@@ -6,7 +6,7 @@ let updateInterval = null;
 let saveInterval = null;
 let lastSavedTime = 0;
 let isPaused = false;
-let timerEnabled = false;
+let timerEnabled = true;
 
 if (!window.timeTrackerLoaded) {
   window.timeTrackerLoaded = true;
@@ -50,7 +50,7 @@ async function checkTimerEnabled() {
             resolve(false);
             return;
           }
-          timerEnabled = result.timerEnabled ?? false;
+          timerEnabled = result.timerEnabled ?? true;
           resolve(timerEnabled);
         });
       } else {

@@ -1,4 +1,58 @@
 let showingToday = true;
+let widgetEnabled = true;
+
+function initializeTabs() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabContents.forEach(content => content.classList.remove('active'));
+      
+      button.classList.add('active');
+      document.getElementById(`${targetTab}-tab`).classList.add('active');
+    });
+  });
+}
+
+function loadTimerState() {
+  chrome.storage.local.get(['timerEnabled'], (result) => {
+    widgetEnabled = result.timerEnabled ?? true;
+    const timerToggle = document.getElementById('timerEnabled');
+    if (timerToggle) {
+      timerToggle.checked = widgetEnabled;
+    }
+  });
+}
+
+function saveTimerState(enabled) {
+  widgetEnabled = enabled;
+  chrome.storage.local.set({ timerEnabled: enabled });
+  
+  chrome.tabs.query({}, (tabs) => {
+    tabs.forEach(tab => {
+      if (tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('chrome-extension://')) {
+        chrome.tabs.sendMessage(tab.id, { 
+          action: 'toggleTimer', 
+          enabled: enabled 
+        }).catch(() => {});
+      }
+    });
+  });
+}
+
+function clearAllHistory() {
+  if (confirm('Are you sure you want to clear all time tracking data? This action cannot be undone.')) {
+    chrome.storage.local.clear(() => {
+      alert('All history has been cleared.');
+      loadData();
+      saveTimerState(widgetEnabled);
+    });
+  }
+}
 
 function formatTime(milliseconds) {
   const seconds = Math.floor(milliseconds / 1000);
@@ -133,19 +187,31 @@ function clearAllData() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initializeTabs();
+  loadTimerState();
   loadData();
   
   document.getElementById('refreshBtn').addEventListener('click', () => {
     loadData();
   });
   
-  document.getElementById('clearBtn').addEventListener('click', () => {
-    clearAllData();
-  });
-  
   document.getElementById('toggleViewBtn').addEventListener('click', () => {
     toggleView();
   });
+  
+  const timerToggle = document.getElementById('timerEnabled');
+  if (timerToggle) {
+    timerToggle.addEventListener('change', (e) => {
+      saveTimerState(e.target.checked);
+    });
+  }
+  
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+  if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', () => {
+      clearAllHistory();
+    });
+  }
 });
 
 setInterval(() => {

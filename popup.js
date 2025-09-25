@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   
   document.getElementById('progressBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('settings.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL('refocuz.html') });
   });
 });
 

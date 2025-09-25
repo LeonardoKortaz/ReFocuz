@@ -34,6 +34,44 @@ body {
   margin-top: 10px;
 }
 
+.tabs {
+  display: flex;
+  border-bottom: 2px solid rgba(252, 254, 251, 0.2);
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  color: #fcfefb;
+  padding: 15px 25px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px 10px 0 0;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.tab-button:hover {
+  opacity: 0.9;
+  background: rgba(252, 254, 251, 0.1);
+}
+
+.tab-button.active {
+  opacity: 1;
+  background: rgba(252, 254, 251, 0.2);
+  border-bottom: 3px solid #fcfefb;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
 .stats-summary {
   display: flex;
   justify-content: space-around;
@@ -209,4 +247,100 @@ body {
 .btn-secondary:hover {
   background: rgba(252, 254, 251, 0.3);
   transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: #ff4757;
+  color: #fcfefb;
+  border: 2px solid #ff3742;
+}
+
+.btn-danger:hover {
+  background: #ff3742;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+}
+
+.settings-section {
+  margin-bottom: 40px;
+  background: rgba(252, 254, 251, 0.1);
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid rgba(252, 254, 251, 0.2);
+}
+
+.settings-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #fcfefb;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+}
+
+.setting-info {
+  flex: 1;
+}
+
+.setting-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.setting-desc {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(252, 254, 251, 0.3);
+  transition: 0.4s;
+  border-radius: 34px;
+  border: 2px solid rgba(252, 254, 251, 0.5);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fcfefb;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #fcfefb;
+  border-color: #fcfefb;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+  background-color: #007dbb;
 }
